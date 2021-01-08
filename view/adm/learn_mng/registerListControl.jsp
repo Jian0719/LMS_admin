@@ -30,30 +30,7 @@
 	$(document).ready(function() {
 			
 			init();
-/* 
-		       $('#c_st').datepicker("option", "maxDate", $("#c_end").val());
-		       $('#c_st').datepicker("option", "onClose", function (selectedDate){
-		           $("#c_st").datepicker( "option", "minDate", selectedDate );
-		           });
-		       
-		       $('#c_end').datepicker();
-		       $('#c_end').datepicker("option", "minDate", $("#c_st").val());
-		       $('#c_end').datepicker("option", "onClose", function (selectedDate){
-		           $("#c_st").datepicker( "option", "maxDate", selectedDate );
-		          });
-			 */
-			 
-		/* 	 var regexp = /^[0-9]*$/
 
-					v = $('#max_pnum').val();
-
-					if( !regexp.test(v) ) {
-
-						alert("숫자만 입력하세요");
-
-						$(this).val(v.replace(regexp,''));
-
-					} */
 			
 			// 강의목록 조회
 			fListLec();		
@@ -69,15 +46,7 @@
 				}
 			});
 			
-		/* 	function check_num(){
-				var form = document.myForm;
-				if(isNaN(form.max_pnum.value)){
-					alert("숫자가 아닙니다.");
-					form.max_pnum.select();
-				}
-			}
- */
- $("input:text[numberOnly]").on("keyup", function() {
+	 $("input:text[numberOnly]").on("keyup", function() {
 	    $(this).val($(this).val().replace(/[^0-9]/g,""));
 
 	});
@@ -110,129 +79,97 @@
 		
 		//변수에 넣어서 가져다 쓰기 위해
 		sa = new Vue({
-		                         el: '#searcharea' 
-		                         ,data: {
-		                        	      searchKey : 'all'
-		                        	     ,searchWord : ''		                        	    
-		                               }
+			 el: '#searcharea' 
+			 ,data: {
+				      searchKey : 'all'
+				     ,searchWord : ''		                        	    
+			       }
 		            });
 	    
-		lec= new Vue({
-							  el: '#div_lec_list',
-							  components: {
-							    'bootstrap-table': BootstrapTable
-							  },
-							  data: {
-									    items: []
-									   ,lec_id: ''
-							  },
-							  methods:{					
-											  b_stdList:function(lec_id){
-												  this.lec_id = lec_id;
-												  fListStd();
-												},
-											  b_update_lec:function(lec_id){					  
-													 fLecSel(lec_id);
-											  },
-											  b_del_lec:function(lec_id,c_st){	
-												 //현재 날짜 가져오는 자바 스크립트
-													var today = new Date();
-													var dd = today.getDate();  
-													var mm = today.getMonth()+1;     
-													var yyyy = today.getFullYear();
-													
-												    if ((dd+"").length < 2) {     
-												    	dd = "0" + dd;
-												    }
-												    
-												    if ((mm+"").length < 2) {     
-												    	mm = "0" + mm;
-												    }											    
-													
-													today = yyyy+'.'+mm+'.'+dd; //데이트 피커 날짜 포멧으로 바꾼후 today변수에 넣기
-													
-												  if(c_st<today){ //현재 날짜가 지나면 삭제 X
-													 console.log(c_st, today);
-												 	alert("개강 이후는 삭제할 수 없습니다.");
-												  }else{
-													  fLecdel(lec_id); 	  
-												  }
-											  } //del
-			 					 }
+lec= new Vue({
+		  el: '#div_lec_list',
+		  components: {
+		    'bootstrap-table': BootstrapTable
+		  },
+		  data: {
+				    items: []
+				   ,lec_id: ''
+		  },
+		  methods:{					
+			  b_stdList:function(lec_id){
+				  this.lec_id = lec_id;
+				  fListStd();
+				},
+			  b_update_lec:function(lec_id){					  
+					 fLecSel(lec_id);
+			  },
+			  b_del_lec:function(lec_id,c_st){	
+				 //현재 날짜 가져오는 자바 스크립트
+					var today = new Date();
+					var dd = today.getDate();  
+					var mm = today.getMonth()+1;     
+					var yyyy = today.getFullYear();
+
+				    if ((dd+"").length < 2) {     
+					dd = "0" + dd;
+				    }
+
+				    if ((mm+"").length < 2) {     
+					mm = "0" + mm;
+				    }											    
+
+					today = yyyy+'.'+mm+'.'+dd; //데이트 피커 날짜 포멧으로 바꾼후 today변수에 넣기
+
+				  if(c_st<today){ //현재 날짜가 지나면 삭제 X
+					 console.log(c_st, today);
+					alert("개강 이후는 삭제할 수 없습니다.");
+				  }else{
+					  fLecdel(lec_id); 	  
+				  }
+			  } //del
+			}
 			
-			});	 //lec
+		});//lec
+	
 	//학생 목록 뿌리기!!
 	
 	stvm = new Vue({
-								  el: '#divStudentList',
-								  components: {
-								    'bootstrap-table': BootstrapTable
-								  },
-								  data: {
-								    items: []
-								  , lec_id: ''
-								  }
+			  el: '#divStudentList',
+			  components: {
+			    'bootstrap-table': BootstrapTable
+			  },
+			  data: {
+			    items: []
+			  , lec_id: ''
+			  }
 		});	
 
 	//과정 폼 추가
 	cvm = new Vue({
-							  el: '#layer1',
-							  data: {
-								lec_id:''
-						       ,lec_name: ''
-						       ,tutor_id:""
-							   ,name: '' 
-							   ,lecrm_id: '' 
-							   ,lecrm_name: '' 
-							   ,c_st: '' 
-							   ,c_end: ''
-							   ,max_pnum:''
-							   ,process_day:''
-							  }/*  ,data(){
-								  
-							  }
-							  watch:{
-								  max_pnum(){
-								      return this.max_pnum = this.onlyNumber.replace(/[^0-9]/g, '');
-								    }
-								} */
-							  /* ,methods:{					
-								  check_num:function(){
-									  var form = document.myForm;
-										if(isNaN(form.max_pnum.value)){
-											alert("숫자가 아닙니다.");
-											form.max_pnum.select();
-								  }
-								  }
-							  }
- */
+			  el: '#layer1',
+			  data: {
+				lec_id:''
+		       ,lec_name: ''
+		       ,tutor_id:""
+			   ,name: '' 
+			   ,lecrm_id: '' 
+			   ,lecrm_name: '' 
+			   ,c_st: '' 
+			   ,c_end: ''
+			   ,max_pnum:''
+			   ,process_day:''
+			  }
 		});	
-/* 	
-	$(selector).datepicker({
-		  dateFormat: 'yy-mm-dd',
-		  minDate: 0
-		});
-	 */
+
 	$("#c_end").datepicker({
 		dateFormat: 'yy.mm.dd',
 		showAnim: "slide",
-		
-/*         onClose: function( selectedDate ) {    
-            // 시작일(fromDate) datepicker가 닫힐때
-            // 종료일(toDate)의 선택할수있는 최소 날짜(minDate)를 선택한 시작일로 지정
-            $("#c_end").datepicker( "option", "maxDate", $("#c_st").val() );
-         // defaultDate: $.datepicker.formatDate('yy.mm.dd', new Date()),
-        }     */          
-      
-			   onClose: function( selectedDate ) {
+	   onClose: function( selectedDate ) {
                    // 종료일(toDate) datepicker가 닫힐때
                    // 시작일(fromDate)의 선택할수있는 최대 날짜(maxDate)를 선택한 종료일로 지정 
                    $("#c_st").datepicker( "option", "minDate",  $("#c_end").val());
                }                
 		});
-	
-	 
-	 
 	 
 	$("#c_st").datepicker({ 
 		dateFormat: 'yy.mm.dd', 
@@ -276,7 +213,7 @@
                      $("#c_end").val(disdate);
        });
 	
-};	//init();
+};//init();
 
 
 	//강의 목록
