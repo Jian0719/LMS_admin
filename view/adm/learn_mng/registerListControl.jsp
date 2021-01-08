@@ -86,7 +86,7 @@
 			       }
 		            });
 	    
-lec= new Vue({
+	lec= new Vue({
 		  el: '#div_lec_list',
 		  components: {
 		    'bootstrap-table': BootstrapTable
